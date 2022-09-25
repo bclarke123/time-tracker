@@ -14,7 +14,7 @@ export const loadProjects = async (): Promise<ProjectStatus[]> => {
 
     await mkdir();
 
-    let projects;
+    let projects: string[];
     try {
         const contents = await readTextFile(
             'projects.json',
@@ -28,7 +28,7 @@ export const loadProjects = async (): Promise<ProjectStatus[]> => {
         projects = ['Internal'];
     }
 
-    return projects.map((p: string) => new ProjectStatus(p));
+    return projects.map((p) => new ProjectStatus(p));
 }
 
 export const saveProjects = async (projects: ProjectStatus[]): Promise<void> => {
