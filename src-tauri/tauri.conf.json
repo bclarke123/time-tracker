@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "tauri-test",
+    "productName": "time-tracker",
     "version": "0.1.0"
   },
   "tauri": {
@@ -17,6 +17,16 @@
         "all": true
       },
       "notification": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$APP",
+          "$APP/*"
+        ]
+      },
+      "path": {
         "all": true
       }
     },
@@ -35,7 +45,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "ca.benclarke.tauri-test",
+      "identifier": "ca.benclarke.time-tracker",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

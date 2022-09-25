@@ -3,7 +3,16 @@
 import { ProjectStatus } from '../classes/project-status';
 
 const props = defineProps<{ time: Number, project: ProjectStatus }>();
-const emit = defineEmits(['toggle']);
+const emit = defineEmits(['toggle', 'delete']);
+
+const confirmDelete = async (): Promise<void> => {
+    const yes = await confirm('Are you sure?');
+
+    if (yes) {
+        console.log('woof');
+        emit('delete');
+    }
+};
 
 </script>
 
@@ -12,6 +21,9 @@ const emit = defineEmits(['toggle']);
         <h3>{{ props.project.name }}</h3>
         <h4>Total: <span :key="`elapsed-${props.time}`">{{ props.project.elapsed() }}</span>
         </h4>
+        <button class="del" @click.stop="confirmDelete">
+            ❌
+        </button>
     </div>
 </template>
 
@@ -20,6 +32,7 @@ const emit = defineEmits(['toggle']);
     padding: 0.5rem;
     will-change: background-color;
     transition: background-color 300ms ease-out;
+    position: relative;
 }
 
 .project:hover {
@@ -34,11 +47,29 @@ const emit = defineEmits(['toggle']);
     background-color: rgba(0, 255, 0, 0.5);
 }
 
-h3 {
-    margin: 0;
-}
-
+h3,
 h4 {
     margin: 0;
+    pointer-events: none;
+}
+
+.del {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    opacity: 0;
+    padding: 0;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+
+    will-change: opacity;
+    transition: opacity 300ms ease-out;
+}
+
+.project:hover .del {
+    opacity: 1;
 }
 </style>
