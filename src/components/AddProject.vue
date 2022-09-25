@@ -5,13 +5,18 @@ import { ref, Ref } from 'vue';
 const name: Ref<string | null> = ref(null);
 const emit = defineEmits(['save']);
 
+const doSave = () => {
+    emit('save', name.value);
+    name.value = '';
+};
+
 </script>
 
 <template>
     <div class="add-project">
         <div>
             <input v-model="name" placeholder="Add Project" />
-            <button @click="emit('save', name)">✔️</button>
+            <button @click="doSave">➕</button>
         </div>
     </div>
 </template>

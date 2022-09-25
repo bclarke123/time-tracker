@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import Project from './components/Project.vue';
+import ProjectList from './components/ProjectList.vue';
 import AddProject from './components/AddProject.vue';
 
 import { ProjectStatus } from './classes/project-status';
@@ -13,7 +13,7 @@ const projects: Ref<ProjectStatus[]> = ref([]);
 watch(projects, () => registerShortcuts(projects.value));
 loadProjects().then((allProjects) => projects.value = allProjects);
 
-let time = ref(0);
+const time = ref(0);
 let frame: number = 0;
 const tick = (): void => {
   time.value = Math.floor(performance.now() / 50);
@@ -31,23 +31,17 @@ const doAddProject = (name: string) => {
 };
 
 const doDeleteProject = (project: ProjectStatus) => {
-
   const arr = projects.value.filter((p) => p !== project);
   projects.value = arr;
   saveProjects(projects.value);
-
 };
 
 </script>
 
 <template>
   <div class="projects">
-
     <AddProject @save="doAddProject" />
-
-    <Project v-for="project in projects" :key="project.name" :project="project" :time="time" @toggle="project.toggle()"
-      @delete="doDeleteProject(project)" />
-
+    <ProjectList :projects="projects" :time="time" @delete="doDeleteProject" />
   </div>
 </template>
 

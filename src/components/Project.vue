@@ -1,17 +1,27 @@
 <script setup lang="ts">
 
+import TimeEntry from './TimeEntry.vue';
+
 import { ProjectStatus } from '../classes/project-status';
+
+import { ref } from 'vue';
 
 const props = defineProps<{ time: Number, project: ProjectStatus }>();
 const emit = defineEmits(['toggle', 'delete']);
+
+const timeEntry = ref(false);
 
 const confirmDelete = async (): Promise<void> => {
     const yes = await confirm('Are you sure?');
 
     if (yes) {
-        console.log('woof');
         emit('delete');
     }
+};
+
+const doTimeEntry = (duration: number) => {
+    console.log(duration);
+    timeEntry.value = false;
 };
 
 </script>
@@ -21,9 +31,11 @@ const confirmDelete = async (): Promise<void> => {
         <h3>{{ props.project.name }}</h3>
         <h4>Total: <span :key="`elapsed-${props.time}`">{{ props.project.elapsed() }}</span>
         </h4>
-        <button class="del" @click.stop="confirmDelete">
-            ❌
-        </button>
+        <TimeEntry v-if="timeEntry" @add="doTimeEntry" />
+        <div class="buttons">
+            <!-- <button @click.stop="timeEntry = !timeEntry" title="Add time span">⏱️</button> -->
+            <button @click.stop="confirmDelete" title="Delete">❌</button>
+        </div>
     </div>
 </template>
 
@@ -53,23 +65,26 @@ h4 {
     pointer-events: none;
 }
 
-.del {
+.buttons {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
     opacity: 0;
+    will-change: opacity;
+    transition: opacity 300ms ease-out;
+}
+
+button {
     padding: 0;
     font-size: 1rem;
     width: 2rem;
     height: 2rem;
     line-height: 2rem;
     text-align: center;
-
-    will-change: opacity;
-    transition: opacity 300ms ease-out;
+    margin-left: 0.5rem;
 }
 
-.project:hover .del {
+.project:hover .buttons {
     opacity: 1;
 }
 </style>
