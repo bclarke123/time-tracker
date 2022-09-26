@@ -20,7 +20,10 @@ const confirmDelete = async (): Promise<void> => {
 };
 
 const doTimeEntry = (duration: number) => {
-    console.log(duration);
+
+    const dms = duration * 3_600_000;
+    props.project.totalTime += dms;
+
     timeEntry.value = false;
 };
 
@@ -33,7 +36,7 @@ const doTimeEntry = (duration: number) => {
         </h4>
         <TimeEntry v-if="timeEntry" @add="doTimeEntry" />
         <div class="buttons">
-            <!-- <button @click.stop="timeEntry = !timeEntry" title="Add time span">⏱️</button> -->
+            <button @click.stop="timeEntry = !timeEntry" title="Add time span">⏱️</button>
             <button @click.stop="confirmDelete" title="Delete">❌</button>
         </div>
     </div>
